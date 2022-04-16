@@ -12,10 +12,10 @@ int main() {
 
 	if (end_m > 59) {
 		end_h += end_m / 60;
-		end_m %= 60;
 	}
 
 	end_h %= 24;
+	end_m %= 60;
 
 	cout << end_h << " " << end_m;
 	return 0;
