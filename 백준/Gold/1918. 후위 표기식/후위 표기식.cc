@@ -1,4 +1,5 @@
 #include <iostream>
+#include <string>
 
 using namespace std;
 
@@ -7,109 +8,87 @@ private:
 	Node* next;
 	char value;
 public:
-
-	Node(char value, Node* node) {
-		this->value = value;
-			next = node;
-	}
-
-	int getValue();
-	void setValue(char);
-	Node* getNext();
-	void setNext(Node*);
+	friend class Stack;
 };
 
-int Node::getValue() {
-	return value;
-}
-
-void Node::setValue(char value) {
-	this->value = value;
-}
-
-Node* Node::getNext() {
-	return next;
-}
-
-void Node::setNext(Node* node) {
-	next = node;
-}
 
 class Stack {
 private:
-	int size=0;
-	Node* Top=nullptr;
+	int datasize;
+	Node* Top;
 
 public:
+	Stack()
+	{
+		datasize = 0;
+		Top = nullptr;
+	}
 
-	void push(char);
-	char top();
-	void pop();
-	bool empty();
+	void push(char x) {
+		Node* node = new Node;
+		node->value = x;
+		node->next = Top;
+		Top = node;
+		datasize++;
+	}
+
+	char top() {
+		if (empty()) return -1;
+		return  Top->value;
+	}
+
+	char pop() {
+		if (empty()) {
+			return -1;
+		}
+		Node* node = Top;
+		Top = Top->next;
+		int tmp = node->value;
+		delete node;
+		datasize--;
+		return tmp;
+	}
+	bool empty() {
+		return datasize == 0;
+	}
+
+	int size() {
+		return datasize;
+	}
 };
 
-void Stack::push(char value) {
-	Node* node = new Node(value, nullptr);
-
-	if (Top == nullptr) {
-		Top = node;
-	}
-
-	else {
-		node->setNext(Top);
-		Top = node;
-	}
-
-	size++;
-}
-
-char Stack::top() {
-	return Top->getValue();
-}
-
-void Stack:: pop() {
-	Node* node = Top;
-	Top = Top->getNext();
-	delete node;
-	size--;
-}
-
-bool Stack::empty() {
-	return size == 0;
-}
-
-int check(char word) {
-
-	if (word == '*' || word == '/') {
+int check(char c) {
+	if (c == '*' || c == '/') {
 		return 3;
 	}
-	else if (word == '+' || word == '-') {
+
+	else if (c == '+' || c == '-') {
 		return 2;
 	}
 
-	else
+	else {
 		return 1;
+	}
 }
 
-
 int main() {
-	string word;
-	cin >> word;
+	string str;
+	cin >> str;
+
 	Stack stack;
 
-	for (int i{ 0 }; i < word.length(); i++) {
-
-		if ('A' <= word[i] && word[i] <= 'Z') {
-			cout << word[i];
+	for (int i = 0; i < str.length(); i++) {
+		if (str[i] >= 'A' && str[i] <= 'Z') {
+			cout << str[i];
 		}
 
 		else {
-			if (word[i] == '(') {
-				stack.push(word[i]);
+			if (str[i] == '(') {
+				stack.push(str[i]);
 			}
 
-			else if (word[i]==')') {
-				while (!stack.empty()&&stack.top()!='(') {
+			else if (str[i] == ')') {
+				while (!stack.empty() && stack.top() != '(') {
 					cout << stack.top();
 					stack.pop();
 				}
@@ -118,15 +97,14 @@ int main() {
 			}
 
 			else {
-				while (!stack.empty() && (check(stack.top()) >= check(word[i]))) {
+				while (!stack.empty() && (check(stack.top()) >= check(str[i]))) {
 					cout << stack.top();
 					stack.pop();
 				}
-				stack.push(word[i]);
+
+				stack.push(str[i]);
 			}
 		}
-
-		
 	}
 
 	while (!stack.empty()) {
