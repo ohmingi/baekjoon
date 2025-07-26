@@ -1,32 +1,43 @@
 #include <iostream>
-#include <vector>
+#include <queue>
 
 using namespace std;
 
-int main() {
-    int n, P;
+int main(){
+    int n,p;
+    cin >> n >> p;
+
+    priority_queue<int>pq[7];
+
     int count = 0;
 
-    cin >> n >> P;
+    while(n--){
+        int a,b;
+        cin >> a >> b;
 
-    vector<int> st[P + 1];
-
-    while (n--) {
-        int j, p;
-        cin >> j >> p;
-
-        vector<int> &current_stack = st[j];
-
-        while (!current_stack.empty() && current_stack.back() > p) {
+        if(pq[a].empty() || pq[a].top() < b){
+            pq[a].push(b);
             count++;
-            current_stack.pop_back();
         }
+        else if(pq[a].top() > b){
+            while(pq[a].top() > b){
+                pq[a].pop();
+                count++;
 
-        if (current_stack.empty() || current_stack.back() != p) {
-            current_stack.push_back(p);
-            count++;
+                if(pq[a].empty()){
+                    pq[a].push(b);
+                    count++;
+                    break;
+                }
+
+                if(pq[a].top() < b){
+                    pq[a].push(b);
+                    count++;
+                }
+            }
+
         }
     }
 
-    cout << count << "\n";
+    cout << count;
 }
