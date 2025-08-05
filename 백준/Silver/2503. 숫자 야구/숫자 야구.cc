@@ -7,7 +7,6 @@ using namespace std;
 vector<int> v;
 vector<pair<int,int>> v1;
 int c = 0;
-int ch = 0;
 bool check;
 
 bool judge(int num, int num1, pair<int, int> p){
@@ -62,15 +61,16 @@ int main(){
 
     for(int i = 123; i <= 987; i++){
         if(zero(i) || dup(i)) continue;
-        ch = 0;
+        bool ch = 1;
 
         for(int t = 0; t < n; t++){
-            if(judge(i, v[t], v1[t])){
-                ch++;
+            if(!judge(i, v[t], v1[t])){
+                ch = false;
+                break;
             }
         }
 
-        if(ch == n) c++;
+        if(ch) c++;
 
     }
 
