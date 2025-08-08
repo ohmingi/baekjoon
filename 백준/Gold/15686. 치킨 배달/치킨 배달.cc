@@ -11,8 +11,26 @@ vector<pair<int,int>> v1;
 vector<pair<int,int>> house;
 int mi = 1e9;
 
-void dfs1(int sta){
-    if(v1.size() == m){
+int cal(vector<pair<int,int>> arr){
+    int a = 0;
+
+    for(int i = 0; i < house.size(); i++){
+        int b = 1e9;
+
+        for(int t = 0; t < arr.size(); t++){
+            int c = abs(arr[t].first - house[i].first) + abs(arr[t].second - house[i].second);
+            b = min(c,b);
+            if(b == 1) break;
+        }
+
+        a += b;
+    }
+
+    return a;
+}
+
+void dfs1(int dep, int sta){
+    if(dep == m){
         int sum = 0;
         for(auto a : house){
             int mmin = 1e9;
@@ -29,7 +47,7 @@ void dfs1(int sta){
 
     for(int i = sta; i < v.size(); i++){
         v1.push_back(v[i]);
-        dfs1(i + 1);
+        dfs1(dep + 1, i + 1);
         v1.pop_back();
     }
 }
@@ -48,7 +66,7 @@ int main(){
         }
     }
 
-    dfs1(0);
+    dfs1(0,0);
 
     cout << mi;
 
