@@ -6,9 +6,8 @@
 using namespace std;
 
 int n, m;
-vector<int> adj[10001]; // 인접 리스트 사용
+vector<int> adj[10001]; // 인접 리스트
 bool visited[10001];    // 방문 체크 배열
-int hackCount[10001];   // 각 노드가 해킹할 수 있는 컴퓨터 수
 
 // BFS를 이용하여 해킹 가능한 개수를 계산
 int bfs(int start) {
@@ -45,14 +44,14 @@ int main() {
     vector<int> result;
 
     for (int i = 1; i <= n; i++) {
-        fill(visited, visited + n + 1, false); // 매번 방문 배열 초기화
-        hackCount[i] = bfs(i); // BFS 탐색 후 해킹 가능한 개수 저장
+        fill(visited, visited + n + 1, false); // 방문 배열 초기화
+        int hackCount = bfs(i); // BFS 탐색 후 해킹 가능한 개수 저장
 
-        if (hackCount[i] > maxHacks) {
-            maxHacks = hackCount[i];
+        if (hackCount > maxHacks) {
+            maxHacks = hackCount;
             result.clear();
             result.push_back(i);
-        } else if (hackCount[i] == maxHacks) {
+        } else if (hackCount == maxHacks) {
             result.push_back(i);
         }
     }
